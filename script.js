@@ -59,12 +59,14 @@ var gameView = new Vue({
 			return "<img class='character' src='img/" + this.imageString + "'/>";
 		},
 		
+		//NEED TO WORK ON BASIC MOVEMENTS
 		keyMovements: function(key) {
 			if(this.start_game){
 				let dir = this.keyMap[key];
 				console.log(dir);
 				switch(dir) {
 				case 'right':
+
 				case 'left':
 				case 'up':
 				case 'down':
