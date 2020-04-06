@@ -85,7 +85,28 @@
           <li> <p><img src="img/blockM.png" class = 'characters'> Don't step on the M </p>
           </li>
           <li> <p> <b>Tips:</b> There are Power Ups & Power Downs: </p>
-
+            <div>
+              <img src="img/ricks.png" class='characters' @mouseover="powerups.ricks.displayDesc = true" @mouseout="powerups.ricks.displayDesc = false">
+              <img src="img/football.png" class='characters' @mouseover="powerups.football.displayDesc = true" @mouseout="powerups.football.displayDesc = false">
+              <img src="img/zingermans.png" class='characters' @mouseover="powerups.zingermans.displayDesc = true" @mouseout="powerups.zingermans.displayDesc = false">
+              <img src="img/construction.png" class='characters'@mouseover="powerups.construction.displayDesc = true" @mouseout="powerups.construction.displayDesc = false">
+              <img src="img/blankslate.png" class='characters' @mouseover="powerups.blankslate.displayDesc = true" @mouseout="powerups.blankslate.displayDesc = false">
+              <div class="popup" v-show="powerups.ricks.displayDesc">
+                <div class="popuptext"><b>Thursday at Rick's: </b>You waited in line for an hour and drank too much... Now it's hard to walk properly!</div>
+              </div>
+              <div class="popup" v-show="powerups.football.displayDesc">
+                <div class="popuptext"><b>UM beats OSU: </b>Catch the football to celebrate victory with double points! OR ELSE avoid extra sad students everywhere!</div>
+              </div>
+              <div class="popup" v-show="powerups.zingermans.displayDesc">
+                <div class="popuptext"><b>Zingerman's #2: </b>Enjoy the classic AA sandwich. You feel invincible but a little hyper!</div>
+              </div>
+              <div class="popup" v-show="powerups.construction.displayDesc">
+                <div class="popuptext"><b>AA Construction: </b>Avoid the cones or else you'll have to slow down and deal with the AA potholes!</div>
+              </div>
+              <div class="popup" v-show="powerups.blankslate.displayDesc">
+                <div class="popuptext"><b>Blank Slate Triple Scoop: </b>SUGAR RUSH!!! Too much icecream leads to zoomies and double points!</div>
+              </div>
+            </div>
           </li>
 
         </ol>

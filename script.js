@@ -3,6 +3,23 @@ var gameView = new Vue({
 	data: {
 		difficulty_level: '',
 		start_game: false,
+		powerups: {
+			ricks: {
+				displayDesc: false,
+			},
+			blankslate: {
+				displayDesc: false,
+			},
+			zingermans: {
+				displayDesc: false,
+			},
+			football: {
+				displayDesc: false,
+			},
+			construction: {
+				displayDesc: false,
+			},
+		},
 	},
 	methods: {
 		beginGame: function(level) {
