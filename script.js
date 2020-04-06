@@ -1,17 +1,3 @@
-$(document).ready( function() {
-	$(".btn btn-lg").click(function() {
-		console.log(createCharater("santa.png"));
-		$("#gameWindow").append(createCharater("santa.png"));
-	});
-
-});
-
-function createCharater(imageString){
-	return "<div class='character'><img src='img/" + imageString + "'/></div>";
-}
-
-
-
 var gameView = new Vue({
 	el: '#app',
 	data: {
@@ -52,9 +38,7 @@ var gameView = new Vue({
 			document.getElementById("b1").style.display = "none"
 			document.getElementById("b2").style.display = "none"
 			document.getElementById("b3").style.display = "none"
-			this.spawnCharacter(this.imageString);
-			console.log(this.character);
-			// $('#gameWindow').append(this.character);
+	
 		
 
 		},
@@ -62,6 +46,11 @@ var gameView = new Vue({
 		showWindow: function() {
 			return this.start_game;
 		},
+
+		renderEl: function() {
+			return "<img class='character' src='img/" + this.imageString + "'/>";
+		},
+		
 		openSettings: function() {
 			document.getElementById("settingsPage").style.width = "100%";
 		},
