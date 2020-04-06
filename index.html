@@ -2,37 +2,52 @@
 
 <title>Umich Snakes</title>
 
-<!-- CSS -->
-<link rel="stylesheet" type="text/css" href="style/style.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<head>
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="style/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
 
 <!-- HTML -->
 <body>
-  <div class='splash'>
-    <nav>
-      <h1 style="font-size: 80px"> Winter A&sup2 Snake </h1>
-      
-      <p> Welcome! </p>
-      <p> Choose a Game Mode: </p>
-      <ul class = 'nav'>
-        <li> <button class = 'btn btn-lg' style="margin:10px;">Easy</button>
-        </li>
-        <li> <button class = 'btn btn-lg' style="margin:10px;">Medium</button>
-        </li>
-        <li> <button class = 'btn btn-lg' style="margin:10px;">Hard</button>
-        </li>
-      </ul>
+  <div id="app">
+    <div class='splash'>
+      <nav>
+        <h1 style="font-size: 80px"> Winter A&sup2 Snake </h1>
+        <div id="intro">
+          <p> Welcome! </p>
+          <p> Choose a Game Mode: </p>
+        </div>
+        <ul class = 'nav'>
+          <li> <button id="b1" type="button" @click="beginGame('easy')" class='btn btn-lg' style="margin:10px;">Easy</button>
+          </li>
+          <li> <button id="b2" type="button" @click="beginGame('medium')" class='btn btn-lg' style="margin:10px;">Medium</button>
+          </li>
+          <li> <button id="b3" type="button" @click="beginGame('hard')" class='btn btn-lg' style="margin:10px;">Hard</button>
+          </li>
+        </ul>
+        <div v-if="showWindow()" style="
+        height: 500px; width: 800px; background: white;
+        position: relative;
+        text-align: center;
+        display: inline-block">
+        <p>Lorem Ipsum </p>
+      </div>
     </nav>
     <div class = 'bottomLeft'> by Umich Snakes </div>
-    <input class = 'settingsButton' type="image" src="img/settings.png" onclick="openSettings()" />
-    <input class = 'rulesButton' type="image" src="img/rules.png" onclick="openRules()" />
+    <input class = 'settingsButton' type="image" src="img/settings.png" @click="openSettings()" />
+    <input class = 'rulesButton' type="image" src="img/rules.png" @click="openRules()" />
   </div>
   
 
 
   <div id="settingsPage" class ="overlay">
     <div class = "overlay-content">
-      <a class="closebtn" onclick="closeSettings()">&times;</a>
+      <a class="closebtn" @click="closeSettings()">&times;</a>
       <h1 style="text-decoration: underline; font-size: 60px; color: white"> SETTINGS </h1>
       <p >Game Mode (Level):</p>
       <ul class = 'nav'>
@@ -50,47 +65,35 @@
         <li> <input class = 'characters' type="image" src="img/elf.png"/>
         </li>
         <li> <input class = 'characters' type="image" src="img/gingerbread.png"/>
-      </ul>
+        </ul>
 
+      </div>
     </div>
-  </div>
-  
 
-  <div id="rulesPage" class ="overlay">
-    <div class = "overlay-content">
-      <a class="closebtn" onclick="closeRules()">&times;</a>
-      <h1 style="text-decoration: underline; font-size: 60px; color: white"> How to Play </h1>
-      <ol class= 'rules'>
-        <li> <p><img src="img/arrowKey.png" class = 'characters'> Use the Arrow Keys to Move<p>
-        </li>
-        <li> <p><img src="img/reindeer.png" class = 'characters'> Collect Reindeer to Grow </p>
-        </li>
-        <li> <p><img src="img/student.png" class = 'characters'> Don't run into any Walls or Students </p>
-         </li>
-         <li> <p><img src="img/blockM.png" class = 'characters'> Don't step on the M </p>
-         </li>
-         <li> <p> <b>Tips:</b> There are Power Ups & Power Downs: </p>
 
-         </li>
+    <div id="rulesPage" class ="overlay">
+      <div class = "overlay-content">
+        <a class="closebtn" @click="closeRules()">&times;</a>
+        <h1 style="text-decoration: underline; font-size: 60px; color: white"> How to Play </h1>
+        <ol class= 'rules'>
+          <li> <p><img src="img/arrowKey.png" class = 'characters'> Use the Arrow Keys to Move<p>
+          </li>
+          <li> <p><img src="img/reindeer.png" class = 'characters'> Collect Reindeer to Grow </p>
+          </li>
+          <li> <p><img src="img/student.png" class = 'characters'> Don't run into any Walls or Students </p>
+          </li>
+          <li> <p><img src="img/blockM.png" class = 'characters'> Don't step on the M </p>
+          </li>
+          <li> <p> <b>Tips:</b> There are Power Ups & Power Downs: </p>
 
-      </ol>
+          </li>
 
+        </ol>
+
+      </div>
     </div>
-  </div>
-<script>
-  function openSettings() {
-    document.getElementById("settingsPage").style.width = "100%";
-  }
-  function closeSettings() {
-    document.getElementById("settingsPage").style.width = "0%";
-  }
-  function openRules() {
-    document.getElementById("rulesPage").style.width = "100%";
-  }
-  function closeRules() {
-    document.getElementById("rulesPage").style.width = "0%";
-  }
-</script>
+
+</div>
+<script src="script.js"></script>
 </body>
-
 </html>
