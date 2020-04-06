@@ -5,6 +5,7 @@ var gameView = new Vue({
 		character:"",
 		difficulty_level: '',
 		start_game: false,
+		snake: [],
 		powerups: {
 			ricks: {
 				displayDesc: false,
@@ -21,14 +22,21 @@ var gameView = new Vue({
 			construction: {
 				displayDesc: false,
 			},
+			
 		},
+		keyMap:{
+			"37": "LEFT",
+			"38": "UP",
+			"39": "RIGHT",
+			"40": "DOWN",
+
+		},
+			
+		
 	},
 	methods: {
 
-		spawnCharacter: function (imageString){
-			this.character=  "<div class='character'><img src='img/" + this.imageString + "'/></div> ";
 
-		},
 
 		beginGame: function(level) {
 			this.start_game = true;
@@ -39,8 +47,7 @@ var gameView = new Vue({
 			document.getElementById("b2").style.display = "none"
 			document.getElementById("b3").style.display = "none"
 	
-		
-
+	
 		},
 
 		showWindow: function() {
@@ -48,9 +55,27 @@ var gameView = new Vue({
 		},
 
 		renderEl: function() {
+	
 			return "<img class='character' src='img/" + this.imageString + "'/>";
 		},
 		
+		keyMovements: function(key) {
+			if(this.start_game){
+				let dir = this.keyMap[key];
+				console.log(dir);
+				switch(dir) {
+				case 'right':
+				case 'left':
+				case 'up':
+				case 'down':
+				default:
+					return 0
+				}
+			}
+			
+			
+		},
+
 		openSettings: function() {
 			document.getElementById("settingsPage").style.width = "100%";
 		},
@@ -63,5 +88,14 @@ var gameView = new Vue({
 		closeRules: function() {
 			document.getElementById("rulesPage").style.width = "0%";
 		}
+
+		
+	},
+	mounted () {
+		let self = this;
+		window.addEventListener("keyup", event => this.keyMovements(event.which));
+		
+
 	}
+
 })
