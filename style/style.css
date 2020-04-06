@@ -98,3 +98,11 @@
   left: 50%;
   margin-left: -800px;
 }
+
+
+.character{
+  position: absolute;
+  width:100px;
+  height: 100px;
+
+}

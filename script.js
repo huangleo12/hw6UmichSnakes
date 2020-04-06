@@ -1,6 +1,22 @@
+$(document).ready( function() {
+	$(".btn btn-lg").click(function() {
+		console.log(createCharater("santa.png"));
+		$("#gameWindow").append(createCharater("santa.png"));
+	});
+
+});
+
+function createCharater(imageString){
+	return "<div class='character'><img src='img/" + imageString + "'/></div>";
+}
+
+
+
 var gameView = new Vue({
 	el: '#app',
 	data: {
+		imageString: "santa.png",
+		character:"",
 		difficulty_level: '',
 		start_game: false,
 		powerups: {
@@ -22,6 +38,12 @@ var gameView = new Vue({
 		},
 	},
 	methods: {
+
+		spawnCharacter: function (imageString){
+			this.character=  "<div class='character'><img src='img/" + this.imageString + "'/></div> ";
+
+		},
+
 		beginGame: function(level) {
 			this.start_game = true;
 			this.difficulty_level = level
@@ -30,7 +52,13 @@ var gameView = new Vue({
 			document.getElementById("b1").style.display = "none"
 			document.getElementById("b2").style.display = "none"
 			document.getElementById("b3").style.display = "none"
+			this.spawnCharacter(this.imageString);
+			console.log(this.character);
+			// $('#gameWindow').append(this.character);
+		
+
 		},
+
 		showWindow: function() {
 			return this.start_game;
 		},
