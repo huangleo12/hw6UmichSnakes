@@ -53,6 +53,15 @@ var gameView = new Vue({
 		beginGame: function(level) {
 			this.start_game = true;
 			this.difficulty_level = level
+			if(this.difficulty_level == "easy") {
+				this.num_tick = 400;
+			} else if(this.difficulty_level == "medium") {
+				this.num_tick = 300;
+
+			} else if(this.difficulty_level == "hard") {
+				this.num_tick = 200;
+
+			}
 			console.log(this.difficulty_level)
 			document.getElementById("intro").style.display = "none"
 
@@ -121,28 +130,28 @@ var gameView = new Vue({
 						this.powerups.currentLoc = {};
 						switch(this.powerups.curr) {
 							case 1: //ricks = slow down + input delay
-								this.num_tick = 400;
+								this.num_tick = this.num_tick + 100;
 								this.gameTick();
 								setTimeout(this.gameTick(), 12000);
 								break;
 							case 2: //blankslate = speed up + 1.5* points
-								this.num_tick = 150;
+								this.num_tick = this.num_tick - 150;
 								this.gameTick();
 								setTimeout(this.gameTick(), 12000);
 								this.points_increment = this.points_increment * 1.5;
 								break;
 							case 3: //zingermans = invincibility + speed up
-								this.num_tick = 150;
+								this.num_tick = this.num_tick - 150;
 								this.gameTick();
 								setTimeout(this.gameTick(), 12000);
 								break;
 							case 4: //football -> 2 cases...
-								this.num_tick = 180;
+								this.num_tick = this.num_tick - 120;
 								this.gameTick();
 								setTimeout(this.gameTick(), 12000);
 								break;
 							case 5: //construction = slow down + pothole spawns
-								this.num_tick = 400;
+								this.num_tick = this.num_tick + 100;
 								this.gameTick();
 								setTimeout(this.gameTick(), 12000);
 								break;
