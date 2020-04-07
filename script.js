@@ -253,20 +253,20 @@ var gameView = new Vue({
 			}
 		},
 		caughtFood:function(){
-			// Snake eats
+			// BECAUSE OF THIS, THIS ALWAYS START W A HEAD AND TAIL
 			this.snake.tail.unshift({
 				row: this.snake.head.row,
 				col: this.snake.head.col,
 			})
 	
-			// caughting 
+			
 			if (this.snake.head.row === this.food.row && this.snake.head.col === this.food.col) {
 				this.food = this.getRandGrid();
 			} else {
 				this.snake.tail.pop();
 			}
 
-			//snake movement
+			// SNAKE MOVEMENT NEEDED TO MOVE THE HEAD
 			this.moveSnake();
 			  
 			  let die = false;
@@ -284,6 +284,7 @@ var gameView = new Vue({
 			
 			
 		},
+		
 		gameTick: function () {
 			clearInterval(this.interval1);
 			this.interval1 = setInterval(function() {
