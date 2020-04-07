@@ -6,6 +6,7 @@ var gameView = new Vue({
 		difficulty_level: '',
 		start_game: false,
 		interval1: '',
+		food: {},
 		snake: {
 			head: {
 			},
@@ -49,13 +50,17 @@ var gameView = new Vue({
 			console.log(this.difficulty_level)
 			document.getElementById("intro").style.display = "none"
 
-			var food = this.getRandGrid()
+			this.food = this.getRandGrid()
 			this.snake.head = this.getCenter()
+			this.loadGrid()
 			
+		},
+		loadGrid: function() {
 			// initialize grid
+			this.grid = [];
 			for (let row=0; row < this.rows; row++) {
 				for (let col=0; col < this.cols; col++) {
-					var isFood = (food.row === row && food.col === col);
+					var isFood = (this.food.row === row && this.food.col === col);
 					var isHead = (this.snake.head.row === row && this.snake.head.col === col);
 					this.grid.push({
 						row,
@@ -131,6 +136,8 @@ var gameView = new Vue({
 			}
 		},
 		moveSnake: function() {
+			console.log("in move snake")
+			console.log(this.snake)
 			switch(this.currentDirection) {
 				case 'left':
 					this.snake.head.col--;
@@ -152,6 +159,7 @@ var gameView = new Vue({
 		gameTick: function () {
 			this.interval1 = setInterval(function() {
 				this.moveSnake();
+				this.loadGrid();
 				console.log(this.currentDirection)
 			}.bind(this), 300);
 		}
@@ -160,10 +168,6 @@ var gameView = new Vue({
 	mounted () {
 		let self = this;
 		window.addEventListener("keyup", event => this.keyMovements(event.which));
-		// window.fnInterval = setInterval(() => {
-  // 			this.gameTick();
-  // 			console.log('here')
-		// }, 300);
 		this.gameTick()
 	}
 
