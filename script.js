@@ -3,7 +3,6 @@ var gameView = new Vue({
 	data: {
 		imageString: "santa.png",
 		character:"",
-		difficulty_level: '',
 		start_game: false,
 		game_over: false,
 		interval1: '',
@@ -49,20 +48,18 @@ var gameView = new Vue({
 		
 	},
 	methods: {
-
 		beginGame: function(level) {
 			this.start_game = true;
-			this.difficulty_level = level
-			if(this.difficulty_level == "easy") {
-				this.num_tick = 400;
-			} else if(this.difficulty_level == "medium") {
+			if(level == 'easy') {
+				this.num_tick = 5000;
+			} else if(level == 'medium') {
 				this.num_tick = 300;
 
-			} else if(this.difficulty_level == "hard") {
-				this.num_tick = 200;
+			} else if(level == 'hard') {
+				this.num_tick = 100;
 
 			}
-			console.log(this.difficulty_level)
+			console.log(level)
 			document.getElementById("intro").style.display = "none"
 
 			this.food = this.getRandGrid()
