@@ -6,7 +6,8 @@ var gameView = new Vue({
 		difficulty_level: '',
 		start_game: false,
 		snake: {
-			head: {},
+			head: {
+			},
 		},
 		currentDirection: 'RIGHT',
 		powerups: {
@@ -48,12 +49,13 @@ var gameView = new Vue({
 			document.getElementById("intro").style.display = "none"
 
 			var food = this.getRandGrid()
+			this.snake.head = this.getCenter()
 			
 			// initialize grid
 			for (let row=0; row < this.rows; row++) {
 				for (let col=0; col < this.cols; col++) {
 					var isFood = (food.row === row && food.col === col);
-					var isHead = (snake.head.row === row && snake.head.col === col);
+					var isHead = (this.snake.head.row === row && this.snake.head.col === col);
 					this.grid.push({
 						row,
 						col,
@@ -124,7 +126,6 @@ var gameView = new Vue({
 	mounted () {
 		let self = this;
 		window.addEventListener("keyup", event => this.keyMovements(event.which));
-
 	}
 
 })
