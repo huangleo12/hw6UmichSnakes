@@ -5,14 +5,20 @@ var gameView = new Vue({
 		character:"",
 		difficulty_level: '',
 		start_game: false,
+		game_over: false,
 		interval1: '',
+		powerup_interval: '',
 		food: {},
+		M_tile: {},
+		num_tick: 300,
 		snake: {
 			head: {
 			},
 		},
 		currentDirection: 'right',
 		powerups: {
+			curr: 0,
+			currentLoc: {},
 			ricks: {
 				displayDesc: false,
 			},
@@ -51,9 +57,23 @@ var gameView = new Vue({
 			document.getElementById("intro").style.display = "none"
 
 			this.food = this.getRandGrid()
+			this.M_tile = this.getRandGrid()
+			var temp_powerup = this.getRandPowerUp();
+			this.powerups.curr = temp_powerup.temp_idx;
+			this.powerups.currentLoc = temp_powerup.temp_loc
+
+			// make sure food doesn't spawn on M tile
+			while (this.food.row === this.M_tile.row && this.food.col === this.M_tile.col) {
+				this.food = this.getRandGrid();
+			};
+			this.powerup_interval = setInterval(function() {
+				var temp_powerup = this.getRandPowerUp();
+				this.powerups.curr = temp_powerup.temp_idx;
+				this.powerups.currentLoc = temp_powerup.temp_loc;
+			}.bind(this), 12000);
+
 			this.snake.head = this.getCenter()
 			this.loadGrid()
-			
 		},
 		loadGrid: function() {
 			// initialize grid
@@ -61,12 +81,63 @@ var gameView = new Vue({
 			for (let row=0; row < this.rows; row++) {
 				for (let col=0; col < this.cols; col++) {
 					var isFood = (this.food.row === row && this.food.col === col);
+					var isM = (this.M_tile.row === row && this.M_tile.col === col);
 					var isHead = (this.snake.head.row === row && this.snake.head.col === col);
+					var isPowerUp = (this.powerups.currentLoc.row === row && this.powerups.currentLoc.col === col);
+					
+					//game over
+					if (isHead && isM) {
+						isM = false;
+						this.game_over = true;
+					}
+
+					// grow snake
+					if (isHead && isFood) {
+						isFood = false;
+						this.food = this.getRandGrid();
+						//need to grow snake
+					}
+					
+					if (isHead && isPowerUp) {
+						isPowerUp = false;
+						this.powerups.currentLoc = {};
+						switch(this.powerups.curr) {
+							case 1: //ricks = slow down + input delay
+								this.num_tick = 400;
+								this.gameTick();
+								setTimeout(this.gameTick(), 12000);
+								break;
+							case 2: //blankslate = speed up + 1.5* points
+								this.num_tick = 150;
+								this.gameTick();
+								setTimeout(this.gameTick(), 12000);
+								this.points_increment = this.points_increment * 1.5;
+								break;
+							case 3: //zingermans = invincibility + speed up
+								this.num_tick = 150;
+								this.gameTick();
+								setTimeout(this.gameTick(), 12000);
+								break;
+							case 4: //football -> 2 cases...
+								this.num_tick = 180;
+								this.gameTick();
+								setTimeout(this.gameTick(), 12000);
+								break;
+							case 5: //construction = slow down + pothole spawns
+								this.num_tick = 400;
+								this.gameTick();
+								setTimeout(this.gameTick(), 12000);
+								break;
+						}
+					}
+
 					this.grid.push({
 						row,
 						col,
 						isFood,
 						isHead,
+						isM,
+						isPowerUp,
 					})
 				}
 			}
@@ -156,14 +227,20 @@ var gameView = new Vue({
 					break;
 			}
 		},
+		getRandPowerUp: function() {
+			return {
+				temp_idx: Math.floor((Math.random() * 5)),
+				temp_loc: this.getRandGrid(),
+			}
+		},
 		gameTick: function () {
+			clearInterval(this.interval1);
 			this.interval1 = setInterval(function() {
 				this.moveSnake();
 				this.loadGrid();
 				console.log(this.currentDirection)
-			}.bind(this), 300);
-		}
-		
+			}.bind(this), this.num_tick);
+		},
 	},
 	mounted () {
 		let self = this;

@@ -36,10 +36,28 @@
           <div v-for="item in gridItems">
             <div v-bind:key="item.id" class="grid-item">
               <div v-if="item.data.isHead">
-                <img class="character" src="img/santa.png"/>
+                <img class="main_char" src="img/santa.png"/>
               </div>
               <div v-if="item.data.isFood">
                 <img class="character" src="img/reindeer.png"/>
+              </div>
+              <div v-if="item.data.isM">
+                <img src="img/blockM.png" class="character"/>
+              </div>
+              <div v-if="item.data.isPowerUp && powerups.curr === 1">
+                <img src="img/ricks.png" class="character"/>
+              </div>
+              <div v-if="item.data.isPowerUp && powerups.curr === 2">
+                <img src="img/blankslate.png" class="character"/>
+              </div>
+              <div v-if="item.data.isPowerUp && powerups.curr === 3">
+                <img src="img/zingermans.png" class="character"/>
+              </div>
+              <div v-if="item.data.isPowerUp && powerups.curr === 4">
+                <img src="img/football.png" class="character"/>
+              </div>
+              <div v-if="item.data.isPowerUp && powerups.curr === 5">
+                <img src="img/construction.png" class="character"/>
               </div>
               <!-- <p>{{item.id}}</p> -->
             </div>
@@ -115,7 +133,7 @@
                 <div class="popuptext"><b>AA Construction: </b>Avoid the cones or else you'll have to slow down and deal with the AA potholes!</div>
               </div>
               <div class="popup" v-show="powerups.blankslate.displayDesc">
-                <div class="popuptext"><b>Blank Slate Triple Scoop: </b>SUGAR RUSH!!! Too much icecream leads to zoomies and double points!</div>
+                <div class="popuptext"><b>Blank Slate Triple Scoop: </b>SUGAR RUSH!!! Too much icecream leads to zoomies and extra points!</div>
               </div>
             </div>
           </li>
