@@ -5,7 +5,10 @@ var gameView = new Vue({
 		character:"",
 		difficulty_level: '',
 		start_game: false,
-		snake: [],
+		snake: {
+			head: {},
+		},
+		currentDirection: 'RIGHT',
 		powerups: {
 			ricks: {
 				displayDesc: false,
@@ -50,10 +53,12 @@ var gameView = new Vue({
 			for (let row=0; row < this.rows; row++) {
 				for (let col=0; col < this.cols; col++) {
 					var isFood = (food.row === row && food.col === col);
+					var isHead = (snake.head.row === row && snake.head.col === col);
 					this.grid.push({
 						row,
 						col,
 						isFood,
+						isHead,
 					})
 				}
 			}
@@ -105,15 +110,20 @@ var gameView = new Vue({
 				col: Math.floor((Math.random() * this.cols))
 			}
 		},
-		addFood: function() {
-			 
+		getCenter: function() {
+			return {
+				row: Math.floor((this.rows -1) / 2),
+				col: Math.floor((this.cols-1) / 2),
+			}
+		},
+		gameTick: function() {
+			
 		}
 		
 	},
 	mounted () {
 		let self = this;
 		window.addEventListener("keyup", event => this.keyMovements(event.which));
-		
 
 	}
 
