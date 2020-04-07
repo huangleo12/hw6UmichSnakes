@@ -95,6 +95,12 @@ var gameView = new Vue({
 		closeRules: function() {
 			document.getElementById("rulesPage").style.width = "0%";
 		},
+		getRandGrid: function() {
+			return {
+				row: Math.floor((Math.random() * this.rows)),
+				col: Math.floor((Math.random() * this.cols))
+			}
+		}
 		
 	},
 	mounted () {

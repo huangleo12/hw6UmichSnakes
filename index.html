@@ -31,15 +31,7 @@
           </li>
         </ul>
         </div>
-        <div v-if="showWindow()" id= "gameWindow"> <!-- style="
-        height: 500px; width: 800px; background: white;
-        position: relative;
-        text-align: center;
-        display: inline-block" -->
-        
-<!--         <canvas id="canvas" width="800px" height="500px" style="background: white; position: relative; text-align: center; display: inline-block; z-index: -1;">
-        </canvas> -->
-
+        <div v-if="showWindow()" id= "gameWindow"> 
         <div class="grid">
           <div v-for="item in gridItems">
             <div v-bind:key="item.id" class='grid-item' style="">
