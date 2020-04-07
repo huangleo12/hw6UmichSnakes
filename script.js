@@ -29,36 +29,44 @@ var gameView = new Vue({
 			"38": "UP",
 			"39": "RIGHT",
 			"40": "DOWN",
-
 		},
-			
+		rows: 10,
+		cols: 10,
+		grid: [],
+		gridItems: {},		
 		
 	},
 	methods: {
-
-
 
 		beginGame: function(level) {
 			this.start_game = true;
 			this.difficulty_level = level
 			console.log(this.difficulty_level)
 			document.getElementById("intro").style.display = "none"
-			document.getElementById("b1").style.display = "none"
-			document.getElementById("b2").style.display = "none"
-			document.getElementById("b3").style.display = "none"
-	
-	
-		},
 
+			// initialize grid
+			for (let row=0; row < this.rows; row++) {
+				for (let col=0; col < this.cols; col++) {
+					this.grid.push({
+						row,
+						col,
+					})
+				}
+			}
+			var gridItems = this.grid.map((grid) => {
+				return {
+					data: grid,
+					id: (grid.row.toString() + "-" + grid.col.toString()),
+				}
+			})
+			this.gridItems = gridItems;
+		},
 		showWindow: function() {
 			return this.start_game;
 		},
-
 		renderEl: function() {
-	
 			return "<img class='character' src='img/" + this.imageString + "'/>";
 		},
-		
 		//NEED TO WORK ON BASIC MOVEMENTS
 		keyMovements: function(key) {
 			if(this.start_game){
@@ -66,7 +74,6 @@ var gameView = new Vue({
 				console.log(dir);
 				switch(dir) {
 				case 'right':
-
 				case 'left':
 				case 'up':
 				case 'down':
@@ -74,8 +81,6 @@ var gameView = new Vue({
 					return 0
 				}
 			}
-			
-			
 		},
 
 		openSettings: function() {
@@ -89,8 +94,7 @@ var gameView = new Vue({
 		},
 		closeRules: function() {
 			document.getElementById("rulesPage").style.width = "0%";
-		}
-
+		},
 		
 	},
 	mounted () {

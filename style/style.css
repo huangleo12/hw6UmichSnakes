@@ -99,10 +99,27 @@
   margin-left: -800px;
 }
 
-
 .character{
   position: absolute;
   width:50px;
   height: 50px;
 
+}
+
+.grid {
+  width: 500px;
+  height: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.grid-item {
+  outline: 1px solid grey;
+  width: 50px;
+  height: 50px;
+}
+
+.is-food {
+  background-color: red;
 }

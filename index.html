@@ -21,7 +21,7 @@
         <div id="intro">
           <p> Welcome! </p>
           <p> Choose a Game Mode: </p>
-        </div>
+        
         <ul class = 'nav'>
           <li> <button id="b1" type="button" @click="beginGame('easy')" class='btn btn-lg' style="margin:10px;">Easy</button>
           </li>
@@ -30,17 +30,24 @@
           <li> <button id="b3" type="button" @click="beginGame('hard')" class='btn btn-lg' style="margin:10px;">Hard</button>
           </li>
         </ul>
-        <div v-if="showWindow()" style="
+        </div>
+        <div v-if="showWindow()" id= "gameWindow"> <!-- style="
         height: 500px; width: 800px; background: white;
         position: relative;
         text-align: center;
-        display: inline-block" id= "gameWindow">
-      
+        display: inline-block" -->
+        
+<!--         <canvas id="canvas" width="800px" height="500px" style="background: white; position: relative; text-align: center; display: inline-block; z-index: -1;">
+        </canvas> -->
 
-        
-        <p>Lorem Ipsum </p>
-        <div v-html="renderEl()"></div>
-        
+        <div class="grid">
+          <div v-for="item in gridItems">
+            <div v-bind:key="item.id" class='grid-item' style="">
+              <p>{{item.id}}</p>
+            </div>
+            
+          </div>
+        <div v-html="renderEl()"></div>        
 
       </div>
     </nav>
