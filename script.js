@@ -12,8 +12,8 @@ var gameView = new Vue({
 		M_tile: {},
 		num_tick: 300,
 		snake: {
-			head: {
-			},
+			head: {},
+			tail:[],
 		},
 		currentDirection: 'right',
 		powerups: {
@@ -85,6 +85,12 @@ var gameView = new Vue({
 					var isHead = (this.snake.head.row === row && this.snake.head.col === col);
 					var isPowerUp = (this.powerups.currentLoc.row === row && this.powerups.currentLoc.col === col);
 					
+					let isTail = false;
+					this.snake.tail.forEach(t => {
+					  if (t.row === row && t.col === col) {
+						isTail = true;
+					  }
+					})
 					//game over
 					if (isHead && isM) {
 						isM = false;
@@ -94,8 +100,20 @@ var gameView = new Vue({
 					// grow snake
 					if (isHead && isFood) {
 						isFood = false;
-						this.food = this.getRandGrid();
+						//this.food = this.getRandGrid();
 						//need to grow snake
+
+						// this.snake.tail.unshift({
+						// 	row: this.snake.head.row,
+						// 	col: this.snake.head.col,
+						// })
+				
+						// // Snake does potty, only when not eating
+						// if (this.snake.head.row === this.food.row && this.snake.head.col === this.food.col) {
+						// 	this.food = this.getRandGrid();
+						// } else {
+						// 	this.snake.tail.pop();
+						// }
 					}
 					
 					if (isHead && isPowerUp) {
@@ -138,6 +156,7 @@ var gameView = new Vue({
 						isHead,
 						isM,
 						isPowerUp,
+						isTail,
 					})
 				}
 			}
@@ -207,8 +226,8 @@ var gameView = new Vue({
 			}
 		},
 		moveSnake: function() {
-			console.log("in move snake")
-			console.log(this.snake)
+			//console.log("in move snake")
+			//console.log(this.snake)
 			switch(this.currentDirection) {
 				case 'left':
 					this.snake.head.col--;
@@ -233,12 +252,48 @@ var gameView = new Vue({
 				temp_loc: this.getRandGrid(),
 			}
 		},
+		caughtFood:function(){
+			// Snake eats
+			this.snake.tail.unshift({
+				row: this.snake.head.row,
+				col: this.snake.head.col,
+			})
+	
+			// caughting 
+			if (this.snake.head.row === this.food.row && this.snake.head.col === this.food.col) {
+				this.food = this.getRandGrid();
+			} else {
+				this.snake.tail.pop();
+			}
+
+			//snake movement
+			this.moveSnake();
+			  
+			  let die = false;
+			  if (this.snake.head.row < 0 ||
+				this.snake.head.row >= this.rows ||
+				this.snake.head.col < 0 ||
+				this.snake.head.col >= this.rows
+			  ) {
+				alert('died');
+				this.beginGame();
+			
+			  }
+		
+	
+			
+			
+		},
 		gameTick: function () {
 			clearInterval(this.interval1);
 			this.interval1 = setInterval(function() {
-				this.moveSnake();
+				
+				
+				//this.moveSnake();
+				this.caughtFood();
 				this.loadGrid();
-				console.log(this.currentDirection)
+				
+				//console.log(this.currentDirection)
 			}.bind(this), this.num_tick);
 		},
 	},
