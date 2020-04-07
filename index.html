@@ -34,8 +34,14 @@
         <div v-if="showWindow()" id= "gameWindow"> 
         <div class="grid">
           <div v-for="item in gridItems">
-            <div v-bind:key="item.id" v-bind:class="{'grid-item is-food': item.data.isFood, 'grid-item': !item.data.isFood, 'grid-item is-head': item.data.isHead}">
-              <p>{{item.id}}</p>
+            <div v-bind:key="item.id" v-bind:class="{'grid-item': !item.data.isFood, 'grid-item is-head': item.data.isHead}">
+              <div v-if="item.data.isHead">
+                <img class="character" src="img/santa.png"/>
+              </div>
+              <div v-if="item.data.isFood">
+                <img class="character" src="img/reindeer.png"/>
+              </div>
+              <!-- <p>{{item.id}}</p> -->
             </div>
             
           </div>
