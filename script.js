@@ -5,11 +5,12 @@ var gameView = new Vue({
 		character:"",
 		difficulty_level: '',
 		start_game: false,
+		interval1: '',
 		snake: {
 			head: {
 			},
 		},
-		currentDirection: 'RIGHT',
+		currentDirection: 'right',
 		powerups: {
 			ricks: {
 				displayDesc: false,
@@ -82,16 +83,27 @@ var gameView = new Vue({
 		keyMovements: function(key) {
 			if(this.start_game){
 				let dir = this.keyMap[key];
-				console.log(dir);
+				console.log(dir);			
 				switch(dir) {
-				case 'right':
-				case 'left':
-				case 'up':
-				case 'down':
-				default:
-					return 0
+					case 'RIGHT':
+						this.currentDirection = 'right'
+						break;
+					case 'LEFT':
+						this.currentDirection = 'left'
+						break;
+					case 'UP':
+						this.currentDirection = 'up'
+						break;
+					case 'DOWN':
+						this.currentDirection = 'down'
+						break;
+					default:
+						this.currentDirection = 'right'
+						return 0
 				}
 			}
+			console.log('currentDirection')
+			console.log(this.currentDirection)
 		},
 
 		openSettings: function() {
@@ -118,14 +130,41 @@ var gameView = new Vue({
 				col: Math.floor((this.cols-1) / 2),
 			}
 		},
-		gameTick: function() {
-			
+		moveSnake: function() {
+			switch(this.currentDirection) {
+				case 'left':
+					this.snake.head.col--;
+					break;
+				case 'right':
+					this.snake.head.col++;
+					break;
+				case 'down':
+					this.snake.head.row++;
+					break;
+				case 'up':
+					this.snake.head.row--;
+					break;
+				default:
+					this.snake.head.col++;
+					break;
+			}
+		},
+		gameTick: function () {
+			this.interval1 = setInterval(function() {
+				this.moveSnake();
+				console.log(this.currentDirection)
+			}.bind(this), 300);
 		}
 		
 	},
 	mounted () {
 		let self = this;
 		window.addEventListener("keyup", event => this.keyMovements(event.which));
+		// window.fnInterval = setInterval(() => {
+  // 			this.gameTick();
+  // 			console.log('here')
+		// }, 300);
+		this.gameTick()
 	}
 
 })
