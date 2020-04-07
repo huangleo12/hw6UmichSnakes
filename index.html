@@ -34,7 +34,7 @@
         <div v-if="showWindow()" id= "gameWindow"> 
         <div class="grid">
           <div v-for="item in gridItems">
-            <div v-bind:key="item.id" class='grid-item' style="">
+            <div v-bind:key="item.id" v-bind:class="{'grid-item is-food': item.data.isFood, 'grid-item': !item.data.isFood}">
               <p>{{item.id}}</p>
             </div>
             

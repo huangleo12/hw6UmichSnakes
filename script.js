@@ -44,12 +44,16 @@ var gameView = new Vue({
 			console.log(this.difficulty_level)
 			document.getElementById("intro").style.display = "none"
 
+			var food = this.getRandGrid()
+			
 			// initialize grid
 			for (let row=0; row < this.rows; row++) {
 				for (let col=0; col < this.cols; col++) {
+					var isFood = (food.row === row && food.col === col);
 					this.grid.push({
 						row,
 						col,
+						isFood,
 					})
 				}
 			}
@@ -100,6 +104,9 @@ var gameView = new Vue({
 				row: Math.floor((Math.random() * this.rows)),
 				col: Math.floor((Math.random() * this.cols))
 			}
+		},
+		addFood: function() {
+			 
 		}
 		
 	},
