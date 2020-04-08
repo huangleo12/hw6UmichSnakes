@@ -101,6 +101,8 @@ var gameView = new Vue({
 					if (isHead && isM) {
 						isM = false;
 						this.game_over = true;
+						alert('died');
+						this.beginGame();
 					}
 
 					// grow snake
