@@ -3,13 +3,19 @@ var gameView = new Vue({
 	data: {
 		imageString: "santa.png",
 		character:"",
-		difficulty_level: '',
+		difficulty_level: "",
 		start_game: false,
 		game_over: false,
 		interval1: '',
 		powerup_interval: '',
 		food: {},
 		M_tile: {},
+		// default tick speed - easy
+		easy_def_tick: 500,
+		//med
+		med_def_tick: 300,
+		//hard
+		hard_def_tick: 180,
 		num_tick: 300,
 		snake: {
 			head: {},
@@ -66,11 +72,7 @@ var gameView = new Vue({
 			while (this.food.row === this.M_tile.row && this.food.col === this.M_tile.col) {
 				this.food = this.getRandGrid();
 			};
-			this.powerup_interval = setInterval(function() {
-				var temp_powerup = this.getRandPowerUp();
-				this.powerups.curr = temp_powerup.temp_idx;
-				this.powerups.currentLoc = temp_powerup.temp_loc;
-			}.bind(this), 12000);
+			this.powerUpTick();
 
 			this.snake.head = this.getCenter()
 			this.loadGrid()
@@ -121,30 +123,31 @@ var gameView = new Vue({
 						this.powerups.currentLoc = {};
 						switch(this.powerups.curr) {
 							case 1: //ricks = slow down + input delay
-								this.num_tick = 400;
+								this.num_tick = this.num_tick * 1.3;
 								this.gameTick();
-								setTimeout(this.gameTick(), 12000);
+								this.powerUpTick();
+								this.powerupTimeout();
 								break;
 							case 2: //blankslate = speed up + 1.5* points
-								this.num_tick = 150;
+								this.num_tick = this.num_tick * .65;
 								this.gameTick();
-								setTimeout(this.gameTick(), 12000);
+								this.powerupTimeout();
 								this.points_increment = this.points_increment * 1.5;
 								break;
 							case 3: //zingermans = invincibility + speed up
-								this.num_tick = 150;
+								this.num_tick = this.num_tick * .65;
 								this.gameTick();
-								setTimeout(this.gameTick(), 12000);
+								this.powerupTimeout();
 								break;
 							case 4: //football -> 2 cases...
-								this.num_tick = 180;
+								this.num_tick = this.num_tick * .8;
 								this.gameTick();
-								setTimeout(this.gameTick(), 12000);
+								this.powerupTimeout();
 								break;
 							case 5: //construction = slow down + pothole spawns
-								this.num_tick = 400;
+								this.num_tick = this.num_tick * 1.3;
 								this.gameTick();
-								setTimeout(this.gameTick(), 12000);
+								this.powerupTimeout();
 								break;
 						}
 					}
@@ -248,9 +251,34 @@ var gameView = new Vue({
 		},
 		getRandPowerUp: function() {
 			return {
-				temp_idx: Math.floor((Math.random() * 5)),
+				// temp_idx: Math.floor((Math.random() * 5)),
+				temp_idx: 1,
 				temp_loc: this.getRandGrid(),
 			}
+		},
+		powerUpTick: function () {
+			clearInterval(this.powerup_interval);
+			this.powerup_interval = setInterval(function() {
+				var temp_powerup = this.getRandPowerUp();
+				this.powerups.curr = temp_powerup.temp_idx;
+				this.powerups.currentLoc = temp_powerup.temp_loc;
+			}.bind(this), this.num_tick * 30);
+		},
+		powerupTimeout: function() {
+			setTimeout(function() {
+				// if (this.difficulty_level === "easy") {
+				// 	this.num_tick = this.easy_def_tick;
+				// }
+				// else if (this.difficulty_level === "medium") {
+				// 	this.num_tick = this.med_def_tick;
+				// }
+				// else if (this.difficulty_level === "hard") {
+				// 	this.num_tick = this.hard_def_tick;
+				// }
+				this.num_tick = 300;
+				this.gameTick();
+
+			}.bind(this), this.num_tick * 20);
 		},
 		caughtFood:function(){
 			// BECAUSE OF THIS, THIS ALWAYS START W A HEAD AND TAIL
