@@ -62,6 +62,21 @@
               <div v-if="item.data.isPowerUp && powerups.curr === 5">
                 <img src="img/construction.png" class="character"/>
               </div>
+              <div v-if="item.data.isPothole0 && powerups.curr === 5 && powerups.construction.isPothole[0]">
+                <img src="img/pothole.png" class="character"/>
+              </div>
+              <div v-if="item.data.isPothole1 && powerups.curr === 5 && powerups.construction.isPothole[1]">
+                <img src="img/pothole.png" class="character"/>
+              </div>
+              <div v-if="item.data.isPothole2 && powerups.curr === 5 && powerups.construction.isPothole[2]">
+                <img src="img/pothole.png" class="character"/>
+              </div>
+              <div v-if="item.data.isPothole3 && powerups.curr === 5 && powerups.construction.isPothole[3]">
+                <img src="img/pothole.png" class="character"/>
+              </div>
+              <div v-if="item.data.isPothole4 && powerups.curr === 5 && powerups.construction.isPothole[4]">
+                <img src="img/pothole.png" class="character"/>
+              </div>
               <!-- <p>{{item.id}}</p> -->
             </div>
             
@@ -146,6 +161,11 @@
     </div>
 
 </div>
+
+<audio controls id="music">
+  <source src="img/hail_to_the_victors.mp3" type="audio/mpeg">
+</audio>
+
 <script src="script.js"></script>
 </body>
 </html>

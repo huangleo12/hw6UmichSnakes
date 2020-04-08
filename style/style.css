@@ -107,6 +107,9 @@
 }
 
 .main_char {
+  /* position: fixed; */
+  /* doesn't work because everything is shifted to the right by one square */
+  /* margin-left: 25px; */
   position: relative;
   z-index: 2;
   width:50px;
@@ -126,4 +129,8 @@
   width: 50px;
   height: 50px;
   background-color: white;
+}
+
+#music {
+  visibility: hidden;
 }

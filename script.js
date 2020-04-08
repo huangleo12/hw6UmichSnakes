@@ -32,13 +32,24 @@ var gameView = new Vue({
 				displayDesc: false,
 			},
 			zingermans: {
+				invincible: false,
 				displayDesc: false,
 			},
 			football: {
 				displayDesc: false,
+				music: '',
 			},
 			construction: {
+				num_holes: 0,
 				displayDesc: false,
+				potholes: [
+					{col:-1, row:-1},
+					{col:-1, row:-1},
+					{col:-1, row:-1},
+					{col:-1, row:-1},
+					{col:-1, row:-1},
+				],
+				isPothole: [false, false, false, false, false],
 			},
 			
 		},
@@ -67,9 +78,21 @@ var gameView = new Vue({
 
 			this.food = this.getRandGrid()
 			this.M_tile = this.getRandGrid()
+
 			var temp_powerup = this.getRandPowerUp();
 			this.powerups.curr = temp_powerup.temp_idx;
 			this.powerups.currentLoc = temp_powerup.temp_loc
+
+			this.powerups.construction.num_holes = Math.floor((Math.random() * 4)) + 1;
+			// this.powerups.construction.num_holes = 1;
+			for (let i = 0; i < this.powerups.construction.num_holes; ++i) {
+				this.powerups.construction.potholes[i] = this.getRandGrid();
+				// console.log("HELLLLOOOOOOOOOO");
+				// console.log(this.powerups.construction);
+			}
+
+			//football powerup
+			this.powerups.football.music = document.getElementById("music");
 
 			// make sure food doesn't spawn on M tile
 			while (this.food.row === this.M_tile.row && this.food.col === this.M_tile.col) {
@@ -91,6 +114,12 @@ var gameView = new Vue({
 					var isHead = (this.snake.head.row === row && this.snake.head.col === col);
 					var isPowerUp = (this.powerups.currentLoc.row === row && this.powerups.currentLoc.col === col);
 					
+					var isPothole0 = (this.powerups.construction.potholes[0].row === row && this.powerups.construction.potholes[0].col === col && this.powerups.construction.isPothole[0]);
+					var isPothole1 = (this.powerups.construction.potholes[1].row === row && this.powerups.construction.potholes[1].col === col && this.powerups.construction.isPothole[1]);
+					var isPothole2 = (this.powerups.construction.potholes[2].row === row && this.powerups.construction.potholes[2].col === col && this.powerups.construction.isPothole[2]);
+					var isPothole3 = (this.powerups.construction.potholes[3].row === row && this.powerups.construction.potholes[3].col === col && this.powerups.construction.isPothole[3]);
+					var isPothole4 = (this.powerups.construction.potholes[4].row === row && this.powerups.construction.potholes[4].col === col && this.powerups.construction.isPothole[4]);
+
 					let isTail = false;
 					this.snake.tail.forEach(t => {
 					  if (t.row === row && t.col === col) {
@@ -98,10 +127,11 @@ var gameView = new Vue({
 					  }
 					})
 					//game over
-					if (isHead && isM) {
+					if ((isHead && isM) || (isHead && isPothole0) || (isHead && isPothole1)
+					|| (isHead && isPothole2) || (isHead && isPothole3) ) {
 						isM = false;
 						this.game_over = true;
-						alert('died');
+						alert('You died');
 						this.beginGame();
 					}
 
@@ -141,16 +171,23 @@ var gameView = new Vue({
 								this.points_increment = this.points_increment * 1.5;
 								break;
 							case 3: //zingermans = invincibility + speed up
+								this.powerups.zingermans.invincible = true;
 								this.num_tick = this.num_tick * .65;
 								this.gameTick();
 								this.powerupTimeout();
 								break;
 							case 4: //football -> 2 cases...
 								this.num_tick = this.num_tick * .8;
+								this.powerups.football.music.play();
 								this.gameTick();
 								this.powerupTimeout();
 								break;
 							case 5: //construction = slow down + pothole spawns
+								this.powerups.construction.isPothole[0] = true;
+								this.powerups.construction.isPothole[1] = true;
+								this.powerups.construction.isPothole[2] = true;
+								this.powerups.construction.isPothole[3] = true;
+								this.powerups.construction.isPothole[4] = true;
 								this.num_tick = this.num_tick * 1.3;
 								this.gameTick();
 								this.powerupTimeout();
@@ -166,6 +203,11 @@ var gameView = new Vue({
 						isM,
 						isPowerUp,
 						isTail,
+						isPothole0,
+						isPothole1,
+						isPothole2,
+						isPothole3,
+						isPothole4,
 					})
 				}
 			}
@@ -256,8 +298,8 @@ var gameView = new Vue({
 		},
 		getRandPowerUp: function() {
 			return {
-				// temp_idx: Math.floor((Math.random() * 5)),
-				temp_idx: 1,
+				temp_idx: Math.floor((Math.random() * 6)),
+				// temp_idx: 5,
 				temp_loc: this.getRandGrid(),
 			}
 		},
@@ -280,6 +322,15 @@ var gameView = new Vue({
 				// else if (this.difficulty_level === "hard") {
 				// 	this.num_tick = this.hard_def_tick;
 				// }
+
+				this.powerups.construction.isPothole[0] = false;
+				this.powerups.construction.isPothole[1] = false;
+				this.powerups.construction.isPothole[2] = false;
+				this.powerups.construction.isPothole[3] = false;
+				this.powerups.construction.isPothole[4] = false;
+
+				this.powerups.zingermans.invincible = false;
+				
 				this.num_tick = 300;
 				this.gameTick();
 
@@ -308,7 +359,7 @@ var gameView = new Vue({
 				this.snake.head.col < 0 ||
 				this.snake.head.col >= this.rows
 			  ) {
-				alert('died');
+				alert('You died');
 				this.beginGame();
 			
 			  }
