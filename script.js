@@ -256,8 +256,8 @@ var gameView = new Vue({
 		},
 		getRandPowerUp: function() {
 			return {
-				// temp_idx: Math.floor((Math.random() * 5)),
-				temp_idx: 1,
+				temp_idx: Math.floor((Math.random() * 5)),
+				//temp_idx: 1,
 				temp_loc: this.getRandGrid(),
 			}
 		},
@@ -271,16 +271,16 @@ var gameView = new Vue({
 		},
 		powerupTimeout: function() {
 			setTimeout(function() {
-				// if (this.difficulty_level === "easy") {
-				// 	this.num_tick = this.easy_def_tick;
-				// }
-				// else if (this.difficulty_level === "medium") {
-				// 	this.num_tick = this.med_def_tick;
-				// }
-				// else if (this.difficulty_level === "hard") {
-				// 	this.num_tick = this.hard_def_tick;
-				// }
-				this.num_tick = 300;
+				if (this.difficulty_level === "easy") {
+					this.num_tick = this.easy_def_tick;
+				}
+				else if (this.difficulty_level === "medium") {
+					this.num_tick = this.med_def_tick;
+				}
+				else if (this.difficulty_level === "hard") {
+					this.num_tick = this.hard_def_tick;
+				}
+				//this.num_tick = 300;
 				this.gameTick();
 
 			}.bind(this), this.num_tick * 20);
@@ -318,8 +318,6 @@ var gameView = new Vue({
 			clearInterval(this.interval1);
 			this.interval1 = setInterval(function() {
 				
-				
-				//this.moveSnake();
 				this.caughtFood();
 				this.loadGrid();
 				
