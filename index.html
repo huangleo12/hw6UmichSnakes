@@ -36,10 +36,10 @@
           <div v-for="item in gridItems">
             <div v-bind:key="item.id" class="grid-item">
               <div v-if="item.data.isHead">
-                <img class="main_char" src="img/santa.png"/>
+                <img class="main_char" v-bind:src='imageString'/>
               </div>
               <div v-if="item.data.isTail">
-                <img class="main_char" src="img/santa.png"/>
+                <img class="main_char" v-bind:src='imageString' />
               </div>
               <div v-if="item.data.isFood">
                 <img class="character" src="img/reindeer.png"/>
@@ -65,8 +65,7 @@
               <!-- <p>{{item.id}}</p> -->
             </div>
             
-          </div>
-        <div v-html="renderEl()"></div>        
+          </div>      
 
       </div>
     </nav>
@@ -92,11 +91,11 @@
       </ul>
       <p >Character:</p>
       <ul class = 'nav'>
-        <li> <input class = 'characters' type="image" src="img/santa.png"/>
+        <li> <input class = 'characters' @click="closeSettings(); changeChar('santa')" type="image" src="img/santa.png"/>
         </li>
-        <li> <input class = 'characters' type="image" src="img/elf.png"/>
+        <li> <input class = 'characters' @click="closeSettings(); changeChar('elf')" type="image" src="img/elf.png"/>
         </li>
-        <li> <input class = 'characters' type="image" src="img/gingerbread.png"/>
+        <li> <input class = 'characters' @click="closeSettings(); changeChar('gingerbread')" type="image" src="img/gingerbread.png"/>
         </ul>
 
       </div>

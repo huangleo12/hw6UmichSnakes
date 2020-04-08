@@ -1,7 +1,7 @@
 var gameView = new Vue({
 	el: '#app',
 	data: {
-		imageString: "santa.png",
+		imageString: "img/santa.png",
 		character:"",
 		difficulty_level: "",
 		start_game: false,
@@ -55,7 +55,10 @@ var gameView = new Vue({
 		
 	},
 	methods: {
-
+		changeChar: function(character) {
+			this.imageString = "img/" + character + ".png";
+			console.log(this.imageString);
+		},
 		beginGame: function(level) {
 			this.start_game = true;
 			this.difficulty_level = level;
