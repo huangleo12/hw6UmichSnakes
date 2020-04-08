@@ -78,6 +78,7 @@ var gameView = new Vue({
 			this.powerUpTick();
 
 			this.snake.head = this.getCenter()
+			this.snake.tail = []
 			this.loadGrid()
 		},
 		loadGrid: function() {
@@ -180,7 +181,6 @@ var gameView = new Vue({
 		renderEl: function() {
 			return "<img class='character' src='img/" + this.imageString + "'/>";
 		},
-		//NEED TO WORK ON BASIC MOVEMENTS
 		keyMovements: function(key) {
 			if(this.start_game){
 				let dir = this.keyMap[key];
@@ -310,10 +310,6 @@ var gameView = new Vue({
 				this.beginGame();
 			
 			  }
-		
-	
-			
-			
 		},
 		
 		gameTick: function () {
