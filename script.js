@@ -3,7 +3,7 @@ var gameView = new Vue({
 	data: {
 		imageString: "img/santa.png",
 		character:"",
-		difficulty_level: "",
+		difficulty_level: "medium",
 		start_game: false,
 		game_over: false,
 		interval1: '',
@@ -27,6 +27,7 @@ var gameView = new Vue({
 			currentLoc: {},
 			ricks: {
 				displayDesc: false,
+				drunk: false,
 			},
 			blankslate: {
 				displayDesc: false,
@@ -127,11 +128,17 @@ var gameView = new Vue({
 					  }
 					})
 					//game over
-					if ((isHead && isM) || (isHead && isPothole0) || (isHead && isPothole1)
-					|| (isHead && isPothole2) || (isHead && isPothole3) ) {
+					if (((isHead && isM) 
+					|| (isHead && isPothole0 && this.powerups.construction.isPothole[0]) 
+					|| (isHead && isPothole1 && this.powerups.construction.isPothole[1])
+					|| (isHead && isPothole2 && this.powerups.construction.isPothole[2]) 
+					|| (isHead && isPothole3 && this.powerups.construction.isPothole[3])
+					|| (isHead && isPothole4 && this.powerups.construction.isPothole[4]))
+					&& !this.powerups.zingermans.invincible) {
 						isM = false;
 						this.game_over = true;
 						alert('You died');
+						this.powerupReset();
 						this.beginGame();
 					}
 
@@ -160,6 +167,7 @@ var gameView = new Vue({
 						switch(this.powerups.curr) {
 							case 1: //ricks = slow down + input delay
 								this.num_tick = this.num_tick * 1.3;
+								this.powerups.ricks.drunk = true;
 								this.gameTick();
 								this.powerUpTick();
 								this.powerupTimeout();
@@ -231,16 +239,44 @@ var gameView = new Vue({
 				console.log(dir);			
 				switch(dir) {
 					case 'RIGHT':
-						this.currentDirection = 'right'
+						if (this.powerups.ricks.drunk) {
+							setTimeout(function() {
+								this.currentDirection = 'right';
+							}.bind(this), this.num_tick * 1.5);
+						}
+						else {
+							this.currentDirection = 'right';
+						}
 						break;
 					case 'LEFT':
-						this.currentDirection = 'left'
+						if (this.powerups.ricks.drunk) {
+							setTimeout(function() {
+								this.currentDirection = 'left';
+							}.bind(this), this.num_tick * 1.5);
+						}
+						else {
+							this.currentDirection = 'left';
+						}
 						break;
 					case 'UP':
-						this.currentDirection = 'up'
+						if (this.powerups.ricks.drunk) {
+							setTimeout(function() {
+								this.currentDirection = 'up';
+							}.bind(this), this.num_tick * 1.5);
+						}
+						else {
+							this.currentDirection = 'up';
+						}
 						break;
 					case 'DOWN':
-						this.currentDirection = 'down'
+						if (this.powerups.ricks.drunk) {
+							setTimeout(function() {
+								this.currentDirection = 'down';
+							}.bind(this), this.num_tick * 1.5);
+						}
+						else {
+							this.currentDirection = 'down';
+						}
 						break;
 					default:
 						this.currentDirection = 'right'
@@ -313,15 +349,21 @@ var gameView = new Vue({
 		},
 		powerupTimeout: function() {
 			setTimeout(function() {
-				if (this.difficulty_level === "easy") {
-					this.num_tick = this.easy_def_tick;
-				}
-				else if (this.difficulty_level === "medium") {
-					this.num_tick = this.med_def_tick;
-				}
-				else if (this.difficulty_level === "hard") {
-					this.num_tick = this.hard_def_tick;
-				}
+
+				// TODO: change this into powerupReset() function
+				// brain hurts rn -jerry, 2:00am
+
+				// if (this.difficulty_level === "easy") {
+				// 	this.num_tick = this.easy_def_tick;
+				// }
+				// else if (this.difficulty_level === "medium") {
+				// 	this.num_tick = this.med_def_tick;
+				// }
+				// else if (this.difficulty_level === "hard") {
+				// 	this.num_tick = this.hard_def_tick;
+				// }
+
+				this.powerups.curr = 0;
 				
 				this.powerups.construction.isPothole[0] = false;
 				this.powerups.construction.isPothole[1] = false;
@@ -330,11 +372,37 @@ var gameView = new Vue({
 				this.powerups.construction.isPothole[4] = false;
 
 				this.powerups.zingermans.invincible = false;
+				this.powerups.ricks.drunk = false;
 				
-				// this.num_tick = 300;
+				this.num_tick = 300;
 				this.gameTick();
 
-			}.bind(this), this.num_tick * 20);
+			}.bind(this), this.num_tick * 50);
+		},
+		powerupReset: function() {
+			// if (this.difficulty_level === "easy") {
+			// 	this.num_tick = this.easy_def_tick;
+			// }
+			// else if (this.difficulty_level === "medium") {
+			// 	this.num_tick = this.med_def_tick;
+			// }
+			// else if (this.difficulty_level === "hard") {
+			// 	this.num_tick = this.hard_def_tick;
+			// }
+
+			this.powerups.curr = 0;
+			
+			this.powerups.construction.isPothole[0] = false;
+			this.powerups.construction.isPothole[1] = false;
+			this.powerups.construction.isPothole[2] = false;
+			this.powerups.construction.isPothole[3] = false;
+			this.powerups.construction.isPothole[4] = false;
+
+			this.powerups.zingermans.invincible = false;
+			this.powerups.ricks.drunk = false;
+			
+			this.num_tick = 300;
+			this.gameTick();
 		},
 		caughtFood:function(){
 			// BECAUSE OF THIS, THIS ALWAYS START W A HEAD AND TAIL
