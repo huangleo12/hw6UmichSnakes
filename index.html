@@ -23,11 +23,11 @@
           <p> Choose a Game Mode: </p>
         
         <ul class = 'nav'>
-          <li> <button id="b1" type="button" @click="beginGame('easy')" class='btn btn-lg' style="margin:10px;">Easy</button>
+          <li> <button id="b1" type="button" @click="setLevel('easy'); openIntroRules();" class='btn btn-lg' style="margin:10px;">Easy</button>
           </li>
-          <li> <button id="b2" type="button" @click="beginGame('medium')" class='btn btn-lg' style="margin:10px;">Medium</button>
+          <li> <button id="b2" type="button" @click="setLevel('medium'); openIntroRules();" class='btn btn-lg' style="margin:10px;">Medium</button>
           </li>
-          <li> <button id="b3" type="button" @click="beginGame('hard')" class='btn btn-lg' style="margin:10px;">Hard</button>
+          <li> <button id="b3" type="button" @click="setLevel('hard'); openIntroRules();" class='btn btn-lg' style="margin:10px;">Hard</button>
           </li>
         </ul>
         </div>
@@ -97,11 +97,11 @@
       <h1 style="text-decoration: underline; font-size: 60px; color: white"> SETTINGS </h1>
       <p >Game Mode (Level):</p>
       <ul class = 'nav'>
-        <li> <button class = 'btn btn-lg' @click="closeSettings(); beginGame('easy')" style="margin:10px;">Easy</button>
+        <li> <button class = 'btn btn-lg' @click="closeSettings(); setLevel('easy'); beginGame();" style="margin:10px;">Easy</button>
         </li>
-        <li> <button class = 'btn btn-lg' @click="closeSettings(); beginGame('medium')" style="margin:10px;">Medium</button>
+        <li> <button class = 'btn btn-lg' @click="closeSettings(); setLevel('medium'); beginGame();" style="margin:10px;">Medium</button>
         </li>
-        <li> <button class = 'btn btn-lg' @click="closeSettings(); beginGame('hard')" style="margin:10px;">Hard</button>
+        <li> <button class = 'btn btn-lg' @click="closeSettings(); setLevel('hard'); beginGame();" style="margin:10px;">Hard</button>
         </li>
       </ul>
       <p >Character:</p>
@@ -120,6 +120,49 @@
     <div id="rulesPage" class ="overlay">
       <div class = "overlay-content">
         <a class="closebtn" @click="closeRules()">&times;</a>
+        <h1 style="text-decoration: underline; font-size: 60px; color: white"> How to Play </h1>
+        <ol class= 'rules'>
+          <li> <p><img src="img/arrowKey.png" class = 'characters'> Use the Arrow Keys to Move<p>
+          </li>
+          <li> <p><img src="img/reindeer.png" class = 'characters'> Collect Reindeer to Grow </p>
+          </li>
+          <li> <p><img src="img/student.png" class = 'characters'> Don't run into any Walls or Students </p>
+          </li>
+          <li> <p><img src="img/blockM.png" class = 'characters'> Don't step on the M </p>
+          </li>
+          <li> <p> <b>Tips:</b> There are Power Ups & Power Downs: </p>
+            <div>
+              <img src="img/ricks.png" class='characters' @mouseover="powerups.ricks.displayDesc = true" @mouseout="powerups.ricks.displayDesc = false">
+              <img src="img/football.png" class='characters' @mouseover="powerups.football.displayDesc = true" @mouseout="powerups.football.displayDesc = false">
+              <img src="img/zingermans.png" class='characters' @mouseover="powerups.zingermans.displayDesc = true" @mouseout="powerups.zingermans.displayDesc = false">
+              <img src="img/construction.png" class='characters'@mouseover="powerups.construction.displayDesc = true" @mouseout="powerups.construction.displayDesc = false">
+              <img src="img/blankslate.png" class='characters' @mouseover="powerups.blankslate.displayDesc = true" @mouseout="powerups.blankslate.displayDesc = false">
+              <div class="popup" v-show="powerups.ricks.displayDesc">
+                <div class="popuptext"><b>Thursday at Rick's: </b>You waited in line for an hour and drank too much... Now it's hard to walk properly!</div>
+              </div>
+              <div class="popup" v-show="powerups.football.displayDesc">
+                <div class="popuptext"><b>UM beats OSU: </b>Catch the football to celebrate victory with double points! OR ELSE avoid extra sad students everywhere!</div>
+              </div>
+              <div class="popup" v-show="powerups.zingermans.displayDesc">
+                <div class="popuptext"><b>Zingerman's #2: </b>Enjoy the classic AA sandwich. You feel invincible but a little hyper!</div>
+              </div>
+              <div class="popup" v-show="powerups.construction.displayDesc">
+                <div class="popuptext"><b>AA Construction: </b>Avoid the cones or else you'll have to slow down and deal with the AA potholes!</div>
+              </div>
+              <div class="popup" v-show="powerups.blankslate.displayDesc">
+                <div class="popuptext"><b>Blank Slate Triple Scoop: </b>SUGAR RUSH!!! Too much icecream leads to zoomies and extra points!</div>
+              </div>
+            </div>
+          </li>
+
+        </ol>
+
+      </div>
+    </div>
+
+    <div id="introRulesPage" class ="overlay">
+      <div class = "overlay-content">
+        <a class="closebtn" @click="closeIntroRules(); beginGame();">Start Game</a>
         <h1 style="text-decoration: underline; font-size: 60px; color: white"> How to Play </h1>
         <ol class= 'rules'>
           <li> <p><img src="img/arrowKey.png" class = 'characters'> Use the Arrow Keys to Move<p>

@@ -71,10 +71,12 @@ var gameView = new Vue({
 			this.imageString = "img/" + character + ".png";
 			console.log(this.imageString);
 		},
-		beginGame: function(level) {
-			this.start_game = true;
+		setLevel: function(level) {
 			this.difficulty_level = level;
 			console.log(this.difficulty_level)
+		},
+		beginGame: function() {
+			this.start_game = true;
 			document.getElementById("intro").style.display = "none"
 
 			this.food = this.getRandGrid()
@@ -295,6 +297,12 @@ var gameView = new Vue({
 		},
 		openRules: function() {
 			document.getElementById("rulesPage").style.width = "100%";
+		},
+		openIntroRules: function() {
+			document.getElementById("introRulesPage").style.width = "100%";
+		},
+		closeIntroRules: function() {
+			document.getElementById("introRulesPage").style.width = "0%";
 		},
 		closeRules: function() {
 			document.getElementById("rulesPage").style.width = "0%";
