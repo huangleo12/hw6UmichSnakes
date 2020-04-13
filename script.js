@@ -6,6 +6,8 @@ var gameView = new Vue({
 		difficulty_level: "medium",
 		start_game: false,
 		game_over: false,
+		total_points: 0,
+		points_increment: 100,
 		interval1: '',
 		powerup_interval: '',
 		food: {},
@@ -82,6 +84,8 @@ var gameView = new Vue({
 			this.food = this.getRandGrid()
 			this.M_tile = this.getRandGrid()
 
+			this.powerupReset();
+
 			var temp_powerup = this.getRandPowerUp();
 			this.powerups.curr = temp_powerup.temp_idx;
 			this.powerups.currentLoc = temp_powerup.temp_loc
@@ -101,6 +105,7 @@ var gameView = new Vue({
 			while (this.food.row === this.M_tile.row && this.food.col === this.M_tile.col) {
 				this.food = this.getRandGrid();
 			};
+
 			this.powerUpTick();
 
 			this.snake.head = this.getCenter()
@@ -139,13 +144,18 @@ var gameView = new Vue({
 					&& !this.powerups.zingermans.invincible) {
 						isM = false;
 						this.game_over = true;
-						alert('You died');
-						this.powerupReset();
+						this.powerups.football.music.pause();
+						this.powerups.football.music.currentTime = 0;
+						alert('F! You failed! You have ' + this.total_points + ' points!');
+						// this.powerupReset();
+						// this.powerUpTick();
+						this.total_points = 0;
 						this.beginGame();
 					}
 
 					// grow snake
 					if (isHead && isFood) {
+						this.total_points += this.points_increment;
 						isFood = false;
 						//this.food = this.getRandGrid();
 						//need to grow snake
@@ -169,28 +179,35 @@ var gameView = new Vue({
 						switch(this.powerups.curr) {
 							case 1: //ricks = slow down + input delay
 								this.num_tick = this.num_tick * 1.3;
+								console.log(this.num_tick);
 								this.powerups.ricks.drunk = true;
 								this.gameTick();
+								console.log(this.num_tick);
 								this.powerUpTick();
-								this.powerupTimeout();
+								setTimeout(this.powerupReset, this.num_tick * 20);
 								break;
 							case 2: //blankslate = speed up + 1.5* points
 								this.num_tick = this.num_tick * .65;
 								this.gameTick();
-								this.powerupTimeout();
 								this.points_increment = this.points_increment * 1.5;
+								setTimeout(this.powerupReset, this.num_tick * 20);
 								break;
 							case 3: //zingermans = invincibility + speed up
 								this.powerups.zingermans.invincible = true;
 								this.num_tick = this.num_tick * .65;
 								this.gameTick();
-								this.powerupTimeout();
+								setTimeout(this.powerupReset, this.num_tick * 20);
 								break;
 							case 4: //football -> 2 cases...
 								this.num_tick = this.num_tick * .8;
+								this.points_increment = this.points_increment * 2;
 								this.powerups.football.music.play();
+								setTimeout(function() {
+									this.powerups.football.music.pause();
+									this.powerups.football.music.currentTime = 0;
+								}.bind(this), 7500);
 								this.gameTick();
-								this.powerupTimeout();
+								setTimeout(this.powerupReset, 7500);
 								break;
 							case 5: //construction = slow down + pothole spawns
 								this.powerups.construction.isPothole[0] = true;
@@ -200,7 +217,7 @@ var gameView = new Vue({
 								this.powerups.construction.isPothole[4] = true;
 								this.num_tick = this.num_tick * 1.3;
 								this.gameTick();
-								this.powerupTimeout();
+								setTimeout(this.powerupReset, this.num_tick * 20);
 								break;
 						}
 					}
@@ -242,9 +259,7 @@ var gameView = new Vue({
 				switch(dir) {
 					case 'RIGHT':
 						if (this.powerups.ricks.drunk) {
-							setTimeout(function() {
-								this.currentDirection = 'right';
-							}.bind(this), this.num_tick * 1.5);
+							this.currentDirection = 'left';
 						}
 						else {
 							this.currentDirection = 'right';
@@ -252,9 +267,7 @@ var gameView = new Vue({
 						break;
 					case 'LEFT':
 						if (this.powerups.ricks.drunk) {
-							setTimeout(function() {
-								this.currentDirection = 'left';
-							}.bind(this), this.num_tick * 1.5);
+							this.currentDirection = 'right';
 						}
 						else {
 							this.currentDirection = 'left';
@@ -262,9 +275,7 @@ var gameView = new Vue({
 						break;
 					case 'UP':
 						if (this.powerups.ricks.drunk) {
-							setTimeout(function() {
-								this.currentDirection = 'up';
-							}.bind(this), this.num_tick * 1.5);
+							this.currentDirection = 'down';
 						}
 						else {
 							this.currentDirection = 'up';
@@ -272,9 +283,7 @@ var gameView = new Vue({
 						break;
 					case 'DOWN':
 						if (this.powerups.ricks.drunk) {
-							setTimeout(function() {
-								this.currentDirection = 'down';
-							}.bind(this), this.num_tick * 1.5);
+							this.currentDirection = 'up';
 						}
 						else {
 							this.currentDirection = 'down';
@@ -343,7 +352,7 @@ var gameView = new Vue({
 		getRandPowerUp: function() {
 			return {
 				temp_idx: Math.floor((Math.random() * 6)),
-				// temp_idx: 5,
+				// temp_idx: 1,
 				temp_loc: this.getRandGrid(),
 			}
 		},
@@ -353,52 +362,25 @@ var gameView = new Vue({
 				var temp_powerup = this.getRandPowerUp();
 				this.powerups.curr = temp_powerup.temp_idx;
 				this.powerups.currentLoc = temp_powerup.temp_loc;
-			}.bind(this), this.num_tick * 30);
-		},
-		powerupTimeout: function() {
-			setTimeout(function() {
-
-				// TODO: change this into powerupReset() function
-				// brain hurts rn -jerry, 2:00am
-
-				// if (this.difficulty_level === "easy") {
-				// 	this.num_tick = this.easy_def_tick;
-				// }
-				// else if (this.difficulty_level === "medium") {
-				// 	this.num_tick = this.med_def_tick;
-				// }
-				// else if (this.difficulty_level === "hard") {
-				// 	this.num_tick = this.hard_def_tick;
-				// }
-
-				this.powerups.curr = 0;
-				
-				this.powerups.construction.isPothole[0] = false;
-				this.powerups.construction.isPothole[1] = false;
-				this.powerups.construction.isPothole[2] = false;
-				this.powerups.construction.isPothole[3] = false;
-				this.powerups.construction.isPothole[4] = false;
-
-				this.powerups.zingermans.invincible = false;
-				this.powerups.ricks.drunk = false;
-				
-				this.num_tick = 300;
-				this.gameTick();
-
 			}.bind(this), this.num_tick * 50);
 		},
+		// powerupTimeout: function() {
+		// 	setTimeout(this.powerupReset(), this.num_tick * 50);
+		// },
 		powerupReset: function() {
-			// if (this.difficulty_level === "easy") {
-			// 	this.num_tick = this.easy_def_tick;
-			// }
-			// else if (this.difficulty_level === "medium") {
-			// 	this.num_tick = this.med_def_tick;
-			// }
-			// else if (this.difficulty_level === "hard") {
-			// 	this.num_tick = this.hard_def_tick;
-			// }
+			if (this.difficulty_level === "easy") {
+				this.num_tick = this.easy_def_tick;
+			}
+			else if (this.difficulty_level === "medium") {
+				this.num_tick = this.med_def_tick;
+			}
+			else if (this.difficulty_level === "hard") {
+				this.num_tick = this.hard_def_tick;
+			}
 
 			this.powerups.curr = 0;
+
+			this.points_increment = 100;
 			
 			this.powerups.construction.isPothole[0] = false;
 			this.powerups.construction.isPothole[1] = false;
@@ -409,7 +391,7 @@ var gameView = new Vue({
 			this.powerups.zingermans.invincible = false;
 			this.powerups.ricks.drunk = false;
 			
-			this.num_tick = 300;
+			// this.num_tick = 300;
 			this.gameTick();
 		},
 		caughtFood:function(){
@@ -435,7 +417,11 @@ var gameView = new Vue({
 				this.snake.head.col < 0 ||
 				this.snake.head.col >= this.rows
 			  ) {
-				alert('You died');
+				  
+				this.powerups.football.music.pause();
+				this.powerups.football.music.currentTime = 0;
+				alert('F! You failed! You have ' + this.total_points + ' points!');
+				this.total_points = 0;
 				this.beginGame();
 			
 			  }

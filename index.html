@@ -31,6 +31,9 @@
           </li>
         </ul>
         </div>
+        <div class="scoreboard">
+          <p>Score: {{total_points}}</p>
+        </div>
         <div v-if="showWindow()" id= "gameWindow"> 
         <div class="grid">
           <div v-for="item in gridItems">
@@ -138,10 +141,10 @@
               <img src="img/construction.png" class='characters'@mouseover="powerups.construction.displayDesc = true" @mouseout="powerups.construction.displayDesc = false">
               <img src="img/blankslate.png" class='characters' @mouseover="powerups.blankslate.displayDesc = true" @mouseout="powerups.blankslate.displayDesc = false">
               <div class="popup" v-show="powerups.ricks.displayDesc">
-                <div class="popuptext"><b>Thursday at Rick's: </b>You waited in line for an hour and drank too much... Now it's hard to walk properly!</div>
+                <div class="popuptext"><b>Thursday at Rick's: </b>You waited in line for an hour and drank too much... Now everything is slow and backwards!</div>
               </div>
               <div class="popup" v-show="powerups.football.displayDesc">
-                <div class="popuptext"><b>UM beats OSU: </b>Catch the football to celebrate victory with double points! OR ELSE avoid extra sad students everywhere!</div>
+                <div class="popuptext"><b>UM beats OSU: </b>Catch the football to celebrate victory with double points!</div>
               </div>
               <div class="popup" v-show="powerups.zingermans.displayDesc">
                 <div class="popuptext"><b>Zingerman's #2: </b>Enjoy the classic AA sandwich. You feel invincible but a little hyper!</div>
