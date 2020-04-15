@@ -16,6 +16,11 @@
 <body>
   <div id="app">
     <div class='splash'>
+        <div class="snow layer1 a"></div>
+        <div class="snow layer1"></div> 
+        <div class="snow layer2 a"></div>
+        <div class="snow layer2"></div>
+   
       <nav>
         <h1 style="font-size: 80px"> Winter A&sup2 Snake </h1>
         <div id="intro">
@@ -69,13 +74,13 @@
                 <img src="img/pothole.png" class="character"/>
               </div>
               <div v-if="item.data.isPothole1 && powerups.curr === 5 && powerups.construction.isPothole[1]">
-                <img src="img/pothole.png" class="character"/>
+                <img src="img/pothole.png" class="character" />
               </div>
               <div v-if="item.data.isPothole2 && powerups.curr === 5 && powerups.construction.isPothole[2]">
-                <img src="img/pothole.png" class="character"/>
+                <img src="img/pothole.png" class="character" />
               </div>
               <div v-if="item.data.isPothole3 && powerups.curr === 5 && powerups.construction.isPothole[3]">
-                <img src="img/pothole.png" class="character"/>
+                <img src="img/pothole.png" class="character" />
               </div>
               <div v-if="item.data.isPothole4 && powerups.curr === 5 && powerups.construction.isPothole[4]">
                 <img src="img/pothole.png" class="character"/>
