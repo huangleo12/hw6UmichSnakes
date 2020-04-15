@@ -190,7 +190,8 @@ var gameView = new Vue({
 							case 2: //blankslate = speed up + 1.5* points
 								this.num_tick = this.num_tick * .65;
 								this.gameTick();
-								this.points_increment = this.points_increment * 1.5;
+								this.total_points += this.points_increment * 1.5;
+
 								setTimeout(this.powerupReset, this.num_tick * 20);
 								break;
 							case 3: //zingermans = invincibility + speed up
@@ -201,7 +202,7 @@ var gameView = new Vue({
 								break;
 							case 4: //football -> 2 cases...
 								this.num_tick = this.num_tick * .8;
-								this.points_increment = this.points_increment * 2;
+								this.total_points += this.points_increment * 2;
 								this.powerups.football.music.play();
 								setTimeout(function() {
 									this.powerups.football.music.pause();
