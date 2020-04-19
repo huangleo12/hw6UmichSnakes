@@ -25,6 +25,7 @@ var gameView = new Vue({
 		},
 		currentDirection: 'right',
 		powerups: {
+			music: '',
 			curr: 0,
 			currentLoc: {},
 			ricks: {
@@ -100,6 +101,7 @@ var gameView = new Vue({
 
 			//football powerup
 			this.powerups.football.music = document.getElementById("music");
+			this.powerups.music = document.getElementById("music1");
 
 			// make sure food doesn't spawn on M tile
 			while (this.food.row === this.M_tile.row && this.food.col === this.M_tile.col) {
@@ -146,6 +148,8 @@ var gameView = new Vue({
 						this.game_over = true;
 						this.powerups.football.music.pause();
 						this.powerups.football.music.currentTime = 0;
+						this.powerups.music.pause();
+						this.powerups.music.currentTime = 0;
 						console.log(this.powerups.zingermans.invincible);
 						alert('F! You failed! You have ' + this.total_points + ' points!');
 						// this.powerupReset();
@@ -182,23 +186,38 @@ var gameView = new Vue({
 								this.num_tick = this.num_tick * 1.3;
 								console.log(this.num_tick);
 								this.powerups.ricks.drunk = true;
+								this.powerups.music.play();
+								setTimeout(function() {
+									this.powerups.music.pause();
+									this.powerups.music.currentTime = 0;
+								}.bind(this), 7500);
 								this.gameTick();
 								console.log(this.num_tick);
 								this.powerUpTick();
-								setTimeout(this.powerupReset, this.num_tick * 20);
+								setTimeout(this.powerupReset, 7500);
 								break;
 							case 2: //blankslate = speed up + 1.5* points
 								this.num_tick = this.num_tick * .65;
+								this.powerups.music.play();
+								setTimeout(function() {
+									this.powerups.music.pause();
+									this.powerups.music.currentTime = 0;
+								}.bind(this), 7500);
 								this.gameTick();
 								this.total_points += this.points_increment * 1.5;
 
-								setTimeout(this.powerupReset, this.num_tick * 20);
+								setTimeout(this.powerupReset, 7500);
 								break;
 							case 3: //zingermans = invincibility + speed up
 								this.powerups.zingermans.invincible = true;
 								this.num_tick = this.num_tick * .65;
+								this.powerups.music.play();
+								setTimeout(function() {
+									this.powerups.music.pause();
+									this.powerups.music.currentTime = 0;
+								}.bind(this), 7500);
 								this.gameTick();
-								setTimeout(this.powerupReset, this.num_tick * 20);
+								setTimeout(this.powerupReset, 7500);
 								break;
 							case 4: //football -> 2 cases...
 								this.num_tick = this.num_tick * .8;
@@ -445,6 +464,8 @@ var gameView = new Vue({
 				  else {
 				this.powerups.football.music.pause();
 				this.powerups.football.music.currentTime = 0;
+				this.powerups.music.pause();
+				this.powerups.music.currentTime = 0;
 				alert('F! You failed! You have ' + this.total_points + ' points!');
 				this.total_points = 0;
 				this.beginGame();
